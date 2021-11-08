@@ -20,11 +20,15 @@ const style = {
 export default function ErrorModal() {
   const { auth } = useContext(AuthContext);
 
-  const [open, setOpen] = useState(auth.errorMessage.length !== 0 ? true : false);
-  const [text, setText] = useState(auth.errorMessage);
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
   const handleClose = () => {
     setOpen(false);
-    setText("");
+    auth.clearErrorMessage();
+  }
+  if (auth.errorMessage.length !== 0 && !open) {
+    setOpen(true);
+    setText(auth.errorMessage);
   }
 
   return (

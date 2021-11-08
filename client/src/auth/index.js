@@ -11,7 +11,8 @@ export const AuthActionType = {
     LOGIN_USER: "LOGIN_USER",
     LOGOUT_USER: "LOGOUT_USER",
     REGISTER_USER: "REGISTER_USER",
-    ERROR_OCCURRED: "ERROR_OCCURRED"
+    ERROR_OCCURRED: "ERROR_OCCURRED",
+    CLEAR_ERROR: "CLEAR_ERROR"
 }
 
 function AuthContextProvider(props) {
@@ -58,6 +59,13 @@ function AuthContextProvider(props) {
                 });
             }
             case AuthActionType.ERROR_OCCURRED: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    errorMessage: payload.errorMessage
+                });
+            }
+            case AuthActionType.CLEAR_ERROR: {
                 return setAuth({
                     user: null,
                     loggedIn: false,
@@ -141,6 +149,15 @@ function AuthContextProvider(props) {
                 }
             });
         }
+    }
+
+    auth.clearErrorMessage = async function () {
+        authReducer({
+            type: AuthActionType.CLEAR_ERROR,
+            payload: {
+                errorMessage: ""
+            }
+        });
     }
 
     return (
