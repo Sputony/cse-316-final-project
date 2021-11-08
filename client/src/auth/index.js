@@ -9,6 +9,7 @@ console.log("create AuthContext: " + AuthContext);
 export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
     LOGIN_USER: "LOGIN_USER",
+    LOGOUT_USER: "LOGOUT_USER",
     REGISTER_USER: "REGISTER_USER",
     ERROR_OCCURRED: "ERROR_OCCURRED"
 }
@@ -39,6 +40,13 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: payload.user,
                     loggedIn: true,
+                    errorMessage: ""
+                });
+            }
+            case AuthActionType.LOGOUT_USER: {
+                return setAuth({
+                    user: payload.user,
+                    loggedIn: false,
                     errorMessage: ""
                 });
             }
@@ -95,6 +103,19 @@ function AuthContextProvider(props) {
                     errorMessage: error.response.data.errorMessage
                 }
             });
+        }
+    }
+
+    auth.logoutUser = async function () {
+        const response = await api.logoutUser();
+        if (response.status === 200) {
+            authReducer({
+                type: AuthActionType.LOGOUT_USER,
+                payload: {
+                    user: null
+                }
+            });
+            history.push("/");
         }
     }
 
