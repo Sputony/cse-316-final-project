@@ -46,8 +46,8 @@ loginUser = async (req, res) => {
                     errorMessage: "An account with this email address does not exist."
                 })
         }
-        const storedPassword = existingUser.passwordHash;
-        if (!bcrypt.compare(password, storedPassword)) {
+        const passwordStatus = await bcrypt.compare(password, existingUser.passwordHash);
+        if (!passwordStatus) {
             return res
                 .status(400)
                 .json({

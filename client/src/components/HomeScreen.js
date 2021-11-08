@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext  from '../auth'
 import ListCard from './ListCard.js'
 import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
@@ -11,6 +12,7 @@ import List from '@mui/material/List';
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
 
     useEffect(() => {
         store.loadIdNamePairs();
@@ -24,7 +26,7 @@ const HomeScreen = () => {
         listCard = 
             <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
             {
-                store.idNamePairs.map((pair) => (
+                store.idNamePairs.filter(pair => (pair.ownerEmail === auth.user.email)).map((pair) => (
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}
