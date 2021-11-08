@@ -108,6 +108,7 @@ getTop5Lists = async (req, res) => {
         return res.status(200).json({ success: true, data: top5Lists })
     }).catch(err => console.log(err))
 }
+// User-owned lists only
 getTop5ListPairs = async (req, res) => {
     await Top5List.find({ }, (err, top5Lists) => {
         if (err) {
