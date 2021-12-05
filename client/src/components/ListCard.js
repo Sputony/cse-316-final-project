@@ -4,8 +4,11 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Grid from '@mui/material/Grid';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -55,35 +58,84 @@ function ListCard(props) {
     function handleUpdateText(event) {
         setText(event.target.value);
     }
+    function handleLike(event) {
+        event.stopPropagation();
+        // TO DO
+    }
+    function handleDislike(event) {
+        event.stopPropagation();
+        // TO DO
+    }
+    function handleExpand(event) {
+        event.stopPropagation();
+        // TO DO
+    }
 
     let cardElement =
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
-            button
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
-            }
-            }
             style={{
                 fontSize: '48pt',
                 width: '100%'
             }}
         >
-                <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
-                <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                        <EditIcon style={{fontSize:'48pt'}} />
-                    </IconButton>
-                </Box>
-                <Box sx={{ p: 1 }}>
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
-                        <DeleteIcon style={{fontSize:'48pt'}} />
-                    </IconButton>
-                </Box>
+            <Box sx= {{ flexGrow:1}}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={7}>
+                        <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Box sx={{ p: 1 }}>
+                            <IconButton onClick={handleLike} aria-label='like'>
+                                <ThumbUpOffAltIcon style={{fontSize:'48pt'}} />
+                            </IconButton>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Box sx={{ p: 1 }}>{0}</Box>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Box sx={{ p: 1 }}>
+                            <IconButton onClick={handleDislike} aria-label='dislike'>
+                                <ThumbDownOffAltIcon style={{fontSize:'48pt'}} />
+                            </IconButton>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Box sx={{ p: 1 }}>{0}</Box>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Box sx={{ p: 1 }}>
+                            <IconButton onClick={(event) => {
+                                handleDeleteList(event, idNamePair._id)
+                            }} aria-label='delete'>
+                                <DeleteIcon style={{fontSize:'48pt'}} />
+                            </IconButton>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{'By: Kano'}</Box>
+                    </Grid>
+                    <Grid item xs={12} sm={7}>
+                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}} onClick={(event) => {handleLoadList(event, idNamePair._id)}} color="red">{"Edit"}</Box>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{"Views: "}</Box>
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{0}</Box>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Box sx={{ p: 1 }}>
+                            <IconButton onClick={handleExpand} aria-label='expand'>
+                                <ExpandMoreIcon style={{fontSize:'48pt'}} />
+                            </IconButton>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Box>
         </ListItem>
 
     if (editActive) {
