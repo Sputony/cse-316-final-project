@@ -1,11 +1,18 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import AuthContext  from '../auth'
 import ListCard from './ListCard.js'
 import { Fab, Typography } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
+import GroupsIcon from '@mui/icons-material/Groups';
+import PersonIcon from '@mui/icons-material/Person';
+import FunctionsIcon from '@mui/icons-material/Functions';
+import SortIcon from '@mui/icons-material/Sort';
+import SearchBar from './SearchBar'
 import List from '@mui/material/List';
 import DeleteModal from './DeleteModal';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -14,13 +21,46 @@ import DeleteModal from './DeleteModal';
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
+
+    const handleSortMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
         store.loadIdNamePairs();
     }, []);
-
-    function handleCreateNewList() {
-        store.createNewList();
+    function handleYourListView() {
+        // TO DO
+    }
+    function handleAllListView() {
+        // TO DO
+    }
+    function handleUserListView() {
+        // TO DO
+    }
+    function handleCommunityListView() {
+        // TO DO
+    }
+    function handleSortByNewPublish() {
+        // TO DO
+    }
+    function handleSortByOldPublish() {
+        // TO DO
+    }
+    function handleSortByViews() {
+        // TO DO
+    }
+    function handleSortByLikes() {
+        // TO DO
+    }
+    function handleSortByDislikes() {
+        // TO DO
     }
     let listCard = "";
     if (store) {
@@ -43,13 +83,67 @@ const HomeScreen = () => {
             <div id="list-selector-heading">
             <Fab 
                 color="primary" 
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
+                aria-label="home"
+                id="home-button"
+                onClick={handleYourListView}
             >
-                <AddIcon />
+                <HomeIcon />
             </Fab>
-                <Typography variant="h2">Your Lists</Typography>
+            <Fab 
+                color="primary" 
+                aria-label="groups"
+                id="groups-button"
+                onClick={handleAllListView}
+            >
+                <GroupsIcon />
+            </Fab>
+            <Fab 
+                color="primary" 
+                aria-label="person"
+                id="person-button"
+                onClick={handleUserListView}
+            >
+                <PersonIcon />
+            </Fab>
+            <Fab 
+                color="primary" 
+                aria-label="functions"
+                id="functions-button"
+                onClick={handleCommunityListView}
+            >
+                <FunctionsIcon />
+            </Fab>
+            <SearchBar/>
+            <Typography>SORT BY</Typography>
+            <Fab 
+                color="primary" 
+                aria-label="sort"
+                id="sort-button"
+                onClick={handleSortMenuOpen}
+            >
+                <SortIcon />
+            </Fab>
+            <Menu
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                id="search-menu"
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={isMenuOpen}
+                onClose={handleMenuClose}
+            >
+                <MenuItem onClick={handleSortByNewPublish}>Publish Date (Newest)</MenuItem>
+                <MenuItem onClick={handleSortByOldPublish}>Publish Date (Oldest)</MenuItem>
+                <MenuItem onClick={handleSortByViews}>Views</MenuItem>
+                <MenuItem onClick={handleSortByLikes}>Likes</MenuItem>
+                <MenuItem onClick={handleSortByDislikes}>Dislikes</MenuItem>
+            </Menu>
             </div>
             <div id="list-selector-list">
                 {
