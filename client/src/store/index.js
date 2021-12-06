@@ -200,7 +200,12 @@ function GlobalStoreContextProvider(props) {
         let payload = {
             name: newListName,
             items: ["?", "?", "?", "?", "?"],
-            ownerEmail: auth.user.email
+            ownerEmail: auth.user.email,
+            username: auth.user.username,
+            comments: [{"commentUsername": "admin", "commentString": "This is a test comment"},
+            {"commentUsername": "admin", "commentString": "This is a test comment"},
+            {"commentUsername": "admin", "commentString": "This is a test comment"},
+            {"commentUsername": "admin", "commentString": "This is a test comment"}]
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {

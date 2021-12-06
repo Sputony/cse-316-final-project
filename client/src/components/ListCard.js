@@ -9,6 +9,9 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import { Typography } from '@mui/material'
+import { AddCommentBar } from './AddCommentBar';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -70,6 +73,32 @@ function ListCard(props) {
         event.stopPropagation();
         // TO DO
     }
+    
+    let itemsList = 
+        <Box>
+            <List id="view-items">
+                {
+                    idNamePair.items.map((item, index) => (
+                        <ListItem><Typography variant="h5">{(index+1) + '. ' + item}</Typography></ListItem>
+                    ))
+                }
+            </List>
+        </Box>;
+
+    let commentsList =
+        <Box>
+            <div id="comments-list">
+                <List sx={{ width: '90%' }}>
+                {
+                    idNamePair.comments.map((comment) => (
+                        <ListItem><Typography variant="h5">{comment.commentUsername}<Typography variant="h5">{comment.commentString}</Typography></Typography></ListItem>
+                    ))
+                }
+                </List>
+            </div>
+            <AddCommentBar/>
+        </Box>;
+
 
     let cardElement =
         <ListItem
@@ -77,60 +106,66 @@ function ListCard(props) {
             key={idNamePair._id}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
             style={{
-                fontSize: '48pt',
+                fontSize: '24pt',
                 width: '100%'
             }}
         >
             <Box sx= {{ flexGrow:1}}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={7}>
+                <Grid container spacing={0}>
+                    <Grid item xs={7}>
                         <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
                     </Grid>
                     <Grid item xs={12} sm={1}>
                         <Box sx={{ p: 1 }}>
                             <IconButton onClick={handleLike} aria-label='like'>
-                                <ThumbUpOffAltIcon style={{fontSize:'48pt'}} />
+                                <ThumbUpOffAltIcon style={{fontSize:'24pt'}} />
                             </IconButton>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={1}>
                         <Box sx={{ p: 1 }}>{0}</Box>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={1}>
                         <Box sx={{ p: 1 }}>
                             <IconButton onClick={handleDislike} aria-label='dislike'>
-                                <ThumbDownOffAltIcon style={{fontSize:'48pt'}} />
+                                <ThumbDownOffAltIcon style={{fontSize:'24pt'}} />
                             </IconButton>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={1}>
                         <Box sx={{ p: 1 }}>{0}</Box>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={1}>
                         <Box sx={{ p: 1 }}>
                             <IconButton onClick={(event) => {
                                 handleDeleteList(event, idNamePair._id)
                             }} aria-label='delete'>
-                                <DeleteIcon style={{fontSize:'48pt'}} />
+                                <DeleteIcon style={{fontSize:'24pt'}} />
                             </IconButton>
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{'By: Kano'}</Box>
+                        <Box sx={{ p: 1 }} sx={{fontSize:'16pt'}}>{'By: ' + idNamePair.username}</Box>
                     </Grid>
-                    <Grid item xs={12} sm={7}>
+                    <Grid item xs={6}>
+                        <Box sx={{ p: 1 }}>{itemsList}</Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Box sx={{ p: 1 }}>{commentsList}</Box>
+                    </Grid>
+                    <Grid item xs={7}>
                         <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}} onClick={(event) => {handleLoadList(event, idNamePair._id)}} color="red">{"Edit"}</Box>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={1}>
                         <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{"Views: "}</Box>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={3}>
                         <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{0}</Box>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={1}>
                         <Box sx={{ p: 1 }}>
                             <IconButton onClick={handleExpand} aria-label='expand'>
-                                <ExpandMoreIcon style={{fontSize:'48pt'}} />
+                                <ExpandMoreIcon style={{fontSize:'24pt'}} />
                             </IconButton>
                         </Box>
                     </Grid>

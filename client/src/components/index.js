@@ -1,3 +1,4 @@
+import AddCommentBar from './AddCommentBar'
 import AppBanner from './AppBanner'
 import DeleteModal from './DeleteModal'
 import ErrorModal from './ErrorModal'
@@ -19,6 +20,7 @@ import SearchBar from './SearchBar'
 */
 export { 
     AppBanner,
+    AddCommentBar,
     DeleteModal, 
     ErrorModal, 
     HomeScreen,
