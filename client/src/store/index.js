@@ -52,7 +52,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
                     idNamePairs: payload.idNamePairs,
-                    currentList: null,
+                    currentList: payload.top5List,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -270,6 +270,36 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.saveList = async function (id, items, newName) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            top5List.items = items;
+            top5List.name = newName;
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.success) {
+                    async function getListPairs(top5List) {
+                        response = await api.getTop5ListPairs();
+                        if (response.data.success) {
+                            let pairsArray = response.data.idNamePairs;
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: pairsArray,
+                                    top5List: top5List
+                                }
+                            });
+                            history.push('/');
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+    }
+
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
         storeReducer({
@@ -287,10 +317,7 @@ function GlobalStoreContextProvider(props) {
             items: ["?", "?", "?", "?", "?"],
             ownerEmail: auth.user.email,
             username: auth.user.username,
-            comments: [{"commentUsername": "admin", "commentString": "This is a test comment"},
-            {"commentUsername": "admin", "commentString": "This is a test comment"},
-            {"commentUsername": "admin", "commentString": "This is a test comment"},
-            {"commentUsername": "admin", "commentString": "This is a test comment"}],
+            comments: [],
             likeUsernames: [],
             dislikeUsernames: [],
             views: 0
