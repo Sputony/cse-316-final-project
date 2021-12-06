@@ -115,6 +115,20 @@ function ListCard(props) {
         </IconButton>
     }
 
+    let editOrPublish =
+        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}} onClick={(event) => {handleLoadList(event, idNamePair._id)}} color="red">{"Edit"}</Box>;
+
+    if (new Date(idNamePair.publishDate) > new Date('1970-01-01')) {
+        var date = new Date(idNamePair.publishDate);
+        var dd = String(date.getDate()).padStart(2, '0');
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = date.getFullYear();
+
+        date = mm + '/' + dd + '/' + yyyy;
+        editOrPublish = 
+        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{"Published: " + date}</Box>
+    }
+
     let cardElement =
         <ListItem
             id={idNamePair._id}
@@ -159,7 +173,7 @@ function ListCard(props) {
                         <Box sx={{ p: 1 }}>{commentsList}</Box>
                     </Grid>
                     <Grid item xs={7}>
-                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}} onClick={(event) => {handleLoadList(event, idNamePair._id)}} color="red">{"Edit"}</Box>
+                        {editOrPublish}
                     </Grid>
                     <Grid item xs={4}>
                         <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{"Views: " + idNamePair.views}</Box>

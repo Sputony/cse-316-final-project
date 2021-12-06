@@ -10,7 +10,8 @@ const Top5ListSchema = new Schema(
         comments: { type: [ { commentUsername: { type: String, required: true}, commentString: { type: String, required: true } } ], required: true},
         likeUsernames: { type: [String], required: true},
         dislikeUsernames: { type: [String], required: true},
-        views: { type: Number, required: true}
+        views: { type: Number, required: true},
+        publishDate: { type: Date, required: true}
     },
     { timestamps: true },
 )

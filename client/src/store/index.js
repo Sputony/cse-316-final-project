@@ -300,6 +300,38 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.publishList = async function (id, items, newName, date) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            top5List.items = items;
+            top5List.name = newName;
+            top5List.publishDate = date;
+            console.log(date);
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.success) {
+                    async function getListPairs(top5List) {
+                        response = await api.getTop5ListPairs();
+                        if (response.data.success) {
+                            let pairsArray = response.data.idNamePairs;
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: pairsArray,
+                                    top5List: top5List
+                                }
+                            });
+                            history.push('/');
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+    }
+
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
         storeReducer({
@@ -320,7 +352,8 @@ function GlobalStoreContextProvider(props) {
             comments: [],
             likeUsernames: [],
             dislikeUsernames: [],
-            views: 0
+            views: 0,
+            publishDate: new Date('1970-01-01')
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {

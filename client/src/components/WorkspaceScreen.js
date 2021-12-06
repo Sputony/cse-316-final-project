@@ -23,6 +23,12 @@ function WorkspaceScreen() {
         if (text === "save") {
             store.saveList(store.currentList._id, [formData.get('firstItem'),formData.get('secondItem'),formData.get('thirdItem'),formData.get('fourthItem'),formData.get('fifthItem')], formData.get('listName'))
         }
+        if (text === "publish") {
+            store.publishList(store.currentList._id,
+                [formData.get('firstItem'),formData.get('secondItem'),formData.get('thirdItem'),formData.get('fourthItem'),formData.get('fifthItem')],
+                formData.get('listName'),
+                new Date())
+        }
     };
 
     function handleSave(event) {
