@@ -5,13 +5,14 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import { Typography } from '@mui/material'
-import { AddCommentBar } from './AddCommentBar';
+import AddCommentBar from './AddCommentBar.js';
+import LikeButton from './LikeButton';
+import DislikeButton from './DislikeButton';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -25,6 +26,7 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair } = props;
+    const [expandedView, setExpandedView] = useState(false);
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
@@ -61,44 +63,57 @@ function ListCard(props) {
     function handleUpdateText(event) {
         setText(event.target.value);
     }
-    function handleLike(event) {
-        event.stopPropagation();
-        // TO DO
-    }
-    function handleDislike(event) {
-        event.stopPropagation();
-        // TO DO
-    }
     function handleExpand(event) {
         event.stopPropagation();
-        // TO DO
+        store.incrementListView(idNamePair._id);
+        setExpandedView(true);
     }
-    
-    let itemsList = 
+    function handleCollapse(event) {
+        event.stopPropagation();
+        setExpandedView(false);
+    }
+    let itemsList = ""
+    if (expandedView) {
+        itemsList =
         <Box>
             <List id="view-items">
-                {
-                    idNamePair.items.map((item, index) => (
-                        <ListItem><Typography variant="h5">{(index+1) + '. ' + item}</Typography></ListItem>
-                    ))
-                }
+            {
+                idNamePair.items.map((item, index) => (
+                    <ListItem><Typography variant="h5">{(index+1) + '. ' + item}</Typography></ListItem>
+                ))
+            }
             </List>
         </Box>;
+    }
 
-    let commentsList =
+    let commentsList = ""
+    if (expandedView) {
+        commentsList =
         <Box>
             <div id="comments-list">
                 <List sx={{ width: '90%' }}>
                 {
                     idNamePair.comments.map((comment) => (
-                        <ListItem><Typography variant="h5">{comment.commentUsername}<Typography variant="h5">{comment.commentString}</Typography></Typography></ListItem>
+                        <ListItem><Typography variant="h5">{comment.commentUsername}<Typography style={{ wordWrap: "break-word" }} width="625px" variant="h5">{comment.commentString}</Typography></Typography></ListItem>
                     ))
                 }
                 </List>
             </div>
-            <AddCommentBar/>
+            <AddCommentBar _id={idNamePair._id}/>
         </Box>;
+    }
 
+    let button = 
+        <IconButton onClick={handleExpand} aria-label='expand'>
+            <ExpandMoreIcon style={{fontSize:'24pt'}} />
+        </IconButton>
+
+    if (expandedView) {
+        button =
+        <IconButton onClick={handleCollapse} aria-label='collapse'>
+            <ExpandLessIcon style={{fontSize:'24pt'}} />
+        </IconButton>
+    }
 
     let cardElement =
         <ListItem
@@ -115,25 +130,15 @@ function ListCard(props) {
                     <Grid item xs={7}>
                         <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={2}>
                         <Box sx={{ p: 1 }}>
-                            <IconButton onClick={handleLike} aria-label='like'>
-                                <ThumbUpOffAltIcon style={{fontSize:'24pt'}} />
-                            </IconButton>
+                            <LikeButton likeUsernames={idNamePair.likeUsernames} _id={idNamePair._id} dislikeUsernames={idNamePair.dislikeUsernames}/>
                         </Box>
                     </Grid>
-                    <Grid item xs={1}>
-                        <Box sx={{ p: 1 }}>{0}</Box>
-                    </Grid>
-                    <Grid item xs={1}>
+                    <Grid item xs={2}>
                         <Box sx={{ p: 1 }}>
-                            <IconButton onClick={handleDislike} aria-label='dislike'>
-                                <ThumbDownOffAltIcon style={{fontSize:'24pt'}} />
-                            </IconButton>
+                            <DislikeButton likeUsernames={idNamePair.likeUsernames} _id={idNamePair._id} dislikeUsernames={idNamePair.dislikeUsernames}/>
                         </Box>
-                    </Grid>
-                    <Grid item xs={1}>
-                        <Box sx={{ p: 1 }}>{0}</Box>
                     </Grid>
                     <Grid item xs={1}>
                         <Box sx={{ p: 1 }}>
@@ -156,17 +161,12 @@ function ListCard(props) {
                     <Grid item xs={7}>
                         <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}} onClick={(event) => {handleLoadList(event, idNamePair._id)}} color="red">{"Edit"}</Box>
                     </Grid>
-                    <Grid item xs={1}>
-                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{"Views: "}</Box>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{0}</Box>
+                    <Grid item xs={4}>
+                        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{"Views: " + idNamePair.views}</Box>
                     </Grid>
                     <Grid item xs={1}>
                         <Box sx={{ p: 1 }}>
-                            <IconButton onClick={handleExpand} aria-label='expand'>
-                                <ExpandMoreIcon style={{fontSize:'24pt'}} />
-                            </IconButton>
+                            {button}
                         </Box>
                     </Grid>
                 </Grid>

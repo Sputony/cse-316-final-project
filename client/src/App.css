@@ -161,7 +161,8 @@ body {
   height: 200px;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .list-card,
