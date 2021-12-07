@@ -16,7 +16,7 @@ function Statusbar() {
         store.createNewList();
     }
     let currentView = null;
-    if (auth.loggedIn) {
+    if (auth.loggedIn && (store.currentView === "Your Lists")) {
         currentView = 
         <div id="top5-statusbar">
             <Fab 
@@ -33,7 +33,7 @@ function Statusbar() {
     else {
         currentView =
         <div id="top5-statusbar">
-
+            <Typography variant="h2">{store.currentView}</Typography>
         </div>
     }
     return (

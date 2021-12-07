@@ -38,7 +38,7 @@ function GlobalStoreContextProvider(props) {
         listNameActive: false,
         itemActive: false,
         listMarkedForDeletion: null,
-        currentView: "Your List"
+        currentView: "Your Lists"
     });
     const history = useHistory();
 
@@ -486,6 +486,13 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
             payload: null
+        });
+    }
+
+    store.setCurrentView = function (view) {
+        storeReducer({
+            type: GlobalStoreActionType.SET_CURRENT_VIEW,
+            payload: view
         });
     }
 

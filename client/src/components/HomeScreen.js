@@ -36,10 +36,10 @@ const HomeScreen = () => {
         store.loadIdNamePairs();
     }, []);
     function handleYourListView() {
-        // TO DO
+        store.setCurrentView("Your Lists")
     }
     function handleAllListView() {
-        // TO DO
+        store.setCurrentView("All Lists")
     }
     function handleUserListView() {
         // TO DO
@@ -62,12 +62,21 @@ const HomeScreen = () => {
     function handleSortByDislikes() {
         // TO DO
     }
+    function filterFunction(pair) {
+        if (store.currentView === "Your Lists") {
+            return pair.ownerEmail === auth.user.email;
+        }
+        else if (store.currentView === "All Lists") {
+            return new Date(pair.publishDate) > new Date('1970-01-01');
+        }
+        return false;
+    } 
     let listCard = "";
     if (store) {
         listCard = 
             <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
             {
-                store.idNamePairs.filter(pair => (pair.ownerEmail === auth.user.email)).map((pair) => (
+                store.idNamePairs.filter(pair => filterFunction(pair)).map((pair) => (
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}
