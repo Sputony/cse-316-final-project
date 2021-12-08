@@ -42,7 +42,7 @@ const HomeScreen = () => {
         store.setCurrentView("All Lists")
     }
     function handleUserListView() {
-        // TO DO
+        store.setCurrentView("User Lists")
     }
     function handleCommunityListView() {
         // TO DO
@@ -62,21 +62,40 @@ const HomeScreen = () => {
     function handleSortByDislikes() {
         // TO DO
     }
-    function filterFunction(pair) {
+    function filterByListView(pair) {
         if (store.currentView === "Your Lists") {
             return pair.ownerEmail === auth.user.email;
         }
         else if (store.currentView === "All Lists") {
             return new Date(pair.publishDate) > new Date('1970-01-01');
         }
+        else if (store.currentView === "User Lists") {
+            return new Date(pair.publishDate) > new Date('1970-01-01');
+        }
         return false;
-    } 
+    }
+    function filterBySearchQuery(pair) {
+        if (store.currentView === "Your Lists") {
+            return pair.name.startsWith(store.searchQuery);
+        }
+        else if (store.currentView === "All Lists") {
+            if (store.searchQuery === "") {
+                return true;
+            }
+            else {
+                return pair.name === store.searchQuery;
+            }
+        }
+        else if (store.currentView === "User Lists") {
+            return pair.username === store.searchQuery;
+        } 
+    }
     let listCard = "";
     if (store) {
         listCard = 
             <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
             {
-                store.idNamePairs.filter(pair => filterFunction(pair)).map((pair) => (
+                store.idNamePairs.filter(pair => filterByListView(pair)).filter(pair => filterBySearchQuery(pair)).map((pair) => (
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}

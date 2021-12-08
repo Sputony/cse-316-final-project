@@ -30,11 +30,33 @@ function Statusbar() {
                 <Typography variant="h2">Your Lists</Typography>
         </div>
     }
-    else {
-        currentView =
+    else if (store.currentView === "All Lists") {
+        if (store.searchQuery === "") {
+            currentView =
         <div id="top5-statusbar">
             <Typography variant="h2">{store.currentView}</Typography>
         </div>
+        }
+        else {
+            currentView =
+        <div id="top5-statusbar">
+            <Typography variant="h2">{store.searchQuery + " Lists"}</Typography>
+        </div>
+        }
+    }
+    else if (store.currentView === "User Lists") {
+        if (store.searchQuery === "") {
+            currentView =
+        <div id="top5-statusbar">
+            <Typography variant="h2">{store.currentView}</Typography>
+        </div>
+        }
+        else {
+            currentView =
+        <div id="top5-statusbar">
+            <Typography variant="h2">{store.searchQuery + " Lists"}</Typography>
+        </div>
+        }
     }
     return (
         currentView

@@ -8,12 +8,7 @@ export default function SearchBar() {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            // Set global state to "text"
-
-            // let sourceId = event.target.id;
-            // sourceId = sourceId.substring(sourceId.indexOf("-") + 1);
-            // store.addUpdateItemTransaction(sourceId-1, text);
-            // toggleEdit();
+            store.setSearchQuery(text);
         }
     }
     function handleUpdateText(event) {
