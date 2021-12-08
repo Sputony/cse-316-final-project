@@ -42,7 +42,7 @@ function GlobalStoreContextProvider(props) {
         listMarkedForDeletion: null,
         currentView: "Your Lists",
         searchQuery: "",
-        sortBy: ""
+        sortBy: "New Publish"
     });
     const history = useHistory();
 
@@ -393,6 +393,7 @@ function GlobalStoreContextProvider(props) {
                                     top5List: top5List
                                 }
                             });
+                            store.publishHelper(newName, items, pairsArray);
                             history.push('/');
                         }
                     }
@@ -400,6 +401,93 @@ function GlobalStoreContextProvider(props) {
                 }
             }
             updateList(top5List);
+        }
+    }
+    store.publishHelper = async function(newName, items, pairsArray) {
+        if (!this.idNamePairs.some(pair => (pair.name === newName) && (pair.username === "admin"))) {
+            store.createNewCommunityList(newName, items);
+        }
+        else {
+            let communityId = this.idNamePairs.find(pair => (pair.name === newName) && (pair.username === "admin"))._id;
+            store.updateCommunityListById(communityId, pairsArray);
+        }
+    }
+    store.updateCommunityListById = async function (id, pairsArray) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            let aggregateList = [];
+
+            function listIterator(pair) {
+                for (let i = 0; i < 5; i++) {
+                    if (aggregateList.some(element => element.item === pair.items[i])) {
+                        let newVotes = aggregateList.find(element => element.item === pair.items[i]).votes-i+5;
+                        aggregateList[aggregateList.findIndex(element => element.item === pair.items[i])] = {"item": pair.items[i], "votes": newVotes};
+                    }
+                    else {
+                        aggregateList.push({"item": pair.items[i], "votes": -i+5})
+                    }
+                }
+            }
+
+            pairsArray.filter(pair => (top5List.name === pair.name) && (pair.username !== "admin")).forEach(pair => listIterator(pair));
+            aggregateList.sort((a,b) => a.votes < b.votes);
+            let newItems = [];
+            let newVotes = [];
+            aggregateList.slice(0,5).forEach(element => {
+                newItems.push(element.item);
+                newVotes.push(element.votes);
+            })
+            top5List.items = newItems;
+            top5List.votes = newVotes;
+            top5List.publishDate = new Date()
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.success) {
+                    async function getListPairs(top5List) {
+                        response = await api.getTop5ListPairs();
+                        if (response.data.success) {
+                            let pairsArray = response.data.idNamePairs;
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: pairsArray,
+                                    top5List: top5List
+                                }
+                            });
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+    }
+
+    store.createNewCommunityList = async function (name, items) {
+        let payload = {
+            name: name,
+            items: items,
+            votes: [5,4,3,2,1],
+            ownerEmail: "admin",
+            username: "admin",
+            comments: [],
+            likeUsernames: [],
+            dislikeUsernames: [],
+            views: 0,
+            publishDate: new Date()
+        };
+        const response = await api.createTop5List(payload);
+        if (response.data.success) {
+            let newList = response.data.top5List;
+            storeReducer({
+                type: GlobalStoreActionType.CREATE_NEW_LIST,
+                payload: newList
+            }
+            );
+        }
+        else {
+            console.log("API FAILED TO CREATE A NEW LIST");
         }
     }
 
@@ -418,6 +506,7 @@ function GlobalStoreContextProvider(props) {
         let payload = {
             name: newListName,
             items: ["?", "?", "?", "?", "?"],
+            numbers: [],
             ownerEmail: auth.user.email,
             username: auth.user.username,
             comments: [],
@@ -475,9 +564,13 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.deleteList = async function (listToDelete) {
+        let communityId = this.idNamePairs.find(pair => (pair.name === listToDelete.name) && (pair.username === "admin"))._id;
+        let pairsArray = this.idNamePairs;
+        pairsArray.splice(this.idNamePairs.findIndex(pair => (pair.name === listToDelete.name) && (pair.username === auth.user.username), 1));
         let response = await api.deleteTop5ListById(listToDelete._id);
         if (response.data.success) {
             store.loadIdNamePairs();
+            store.updateCommunityListById(communityId, pairsArray);
             history.push("/");
         }
     }

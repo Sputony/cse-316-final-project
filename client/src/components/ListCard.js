@@ -74,12 +74,19 @@ function ListCard(props) {
     }
     let itemsList = ""
     if (expandedView) {
+        let votesArray = ["","","","","",]
+        if (store.currentView === "Community Lists") {
+            votesArray = [];
+            idNamePair.votes.forEach((vote) => (
+                votesArray.push(<Typography>{"(" + vote + " votes)"}</Typography>)
+            ) );
+        }
         itemsList =
         <Box>
             <List id="view-items">
             {
                 idNamePair.items.map((item, index) => (
-                    <ListItem><Typography variant="h5">{(index+1) + '. ' + item}</Typography></ListItem>
+                    <ListItem><Typography variant="h5">{(index+1) + '. ' + item}{votesArray[index]}</Typography></ListItem>
                 ))
             }
             </List>
@@ -118,7 +125,17 @@ function ListCard(props) {
     let editOrPublish =
         <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}} onClick={(event) => {handleLoadList(event, idNamePair._id)}} color="red">{"Edit"}</Box>;
 
-    if (new Date(idNamePair.publishDate) > new Date('1970-01-01')) {
+    if (store.currentView === "Community Lists") {
+        var date = new Date(idNamePair.publishDate);
+        var dd = String(date.getDate()).padStart(2, '0');
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = date.getFullYear();
+
+        date = mm + '/' + dd + '/' + yyyy;
+        editOrPublish = 
+        <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{"Updated: " + date}</Box>
+    }
+    else if (new Date(idNamePair.publishDate) > new Date('1970-01-01')) {
         var date = new Date(idNamePair.publishDate);
         var dd = String(date.getDate()).padStart(2, '0');
         var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -136,6 +153,13 @@ function ListCard(props) {
             }} aria-label='delete'>
                 <DeleteIcon style={{fontSize:'24pt'}} />
             </IconButton>
+    }
+    let author =
+    <Grid item xs={12}>
+        <Box sx={{ p: 1 }} sx={{fontSize:'16pt'}}>{'By: ' + idNamePair.username}</Box>
+    </Grid>;
+    if (store.currentView === "Community Lists") {
+        author = "";
     }
 
     let cardElement =
@@ -168,9 +192,7 @@ function ListCard(props) {
                             {deleteButton}
                         </Box>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Box sx={{ p: 1 }} sx={{fontSize:'16pt'}}>{'By: ' + idNamePair.username}</Box>
-                    </Grid>
+                    {author}
                     <Grid item xs={6}>
                         <Box sx={{ p: 1 }}>{itemsList}</Box>
                     </Grid>

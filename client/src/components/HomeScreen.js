@@ -45,7 +45,7 @@ const HomeScreen = () => {
         store.setCurrentView("User Lists")
     }
     function handleCommunityListView() {
-        // TO DO
+        store.setCurrentView("Community Lists");
     }
     function handleSortByNewPublish() {
         store.setSortBy("New Publish");
@@ -72,10 +72,23 @@ const HomeScreen = () => {
             return pair.ownerEmail === auth.user.email;
         }
         else if (store.currentView === "All Lists") {
-            return new Date(pair.publishDate) > new Date('1970-01-01');
+            if (pair.username === "admin") {
+                return false;
+            }
+            else {
+                return new Date(pair.publishDate) > new Date('1970-01-01');
+            }
         }
         else if (store.currentView === "User Lists") {
-            return new Date(pair.publishDate) > new Date('1970-01-01');
+            if (pair.username === "admin") {
+                return false;
+            }
+            else {
+                return new Date(pair.publishDate) > new Date('1970-01-01');
+            }
+        }
+        else if (store.currentView === "Community Lists") {
+            return pair.username === "admin";
         }
         return false;
     }
@@ -93,7 +106,10 @@ const HomeScreen = () => {
         }
         else if (store.currentView === "User Lists") {
             return pair.username === store.searchQuery;
-        } 
+        }
+        else if (store.currentView === "Community Lists") {
+            return pair.name.startsWith(store.searchQuery);
+        }
     }
     function sortFunction(a,b) {
         if (store.sortBy === "New Publish") {

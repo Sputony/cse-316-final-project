@@ -58,6 +58,12 @@ function Statusbar() {
         </div>
         }
     }
+    else if (store.currentView === "Community Lists") {
+        currentView =
+        <div id="top5-statusbar">
+            <Typography variant="h2">{store.currentView}</Typography>
+        </div>
+    }
     return (
         currentView
     );
