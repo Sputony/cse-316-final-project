@@ -25,7 +25,8 @@ export const GlobalStoreActionType = {
     SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     SET_CURRENT_VIEW: "SET_CURRENT_VIEW",
-    SET_QUERY: "SET_QUERY"
+    SET_QUERY: "SET_QUERY",
+    SET_SORTBY: "SET_SORTBY"
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -40,7 +41,8 @@ function GlobalStoreContextProvider(props) {
         itemActive: false,
         listMarkedForDeletion: null,
         currentView: "Your Lists",
-        searchQuery: ""
+        searchQuery: "",
+        sortBy: ""
     });
     const history = useHistory();
 
@@ -62,7 +64,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -75,7 +78,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 })
             }
             // CREATE A NEW LIST
@@ -88,7 +92,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -101,7 +106,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -114,7 +120,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: payload,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -127,7 +134,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 });
             }
             // UPDATE A LIST
@@ -140,7 +148,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 });
             }
             // START EDITING A LIST ITEM
@@ -153,7 +162,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: true,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 });
             }
             // START EDITING A LIST NAME
@@ -166,7 +176,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 });
             }
             case GlobalStoreActionType.SET_CURRENT_VIEW: {
@@ -178,7 +189,8 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: payload,
-                    searchQuery: store.searchQuery
+                    searchQuery: store.searchQuery,
+                    sortBy: store.sortBy
                 });
             }
             case GlobalStoreActionType.SET_QUERY: {
@@ -190,7 +202,21 @@ function GlobalStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
                     currentView: store.currentView,
-                    searchQuery: payload
+                    searchQuery: payload,
+                    sortBy: store.sortBy
+                });
+            }
+            case GlobalStoreActionType.SET_SORTBY: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null,
+                    currentView: store.currentView,
+                    searchQuery: store.searchQuery,
+                    sortBy: payload
                 });
             }
             default:
@@ -524,6 +550,13 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.SET_QUERY,
             payload: query
+        });
+    }
+
+    store.setSortBy = function (sortBy) {
+        storeReducer({
+            type: GlobalStoreActionType.SET_SORTBY,
+            payload: sortBy
         });
     }
 

@@ -48,19 +48,24 @@ const HomeScreen = () => {
         // TO DO
     }
     function handleSortByNewPublish() {
-        // TO DO
+        store.setSortBy("New Publish");
+        handleMenuClose();
     }
     function handleSortByOldPublish() {
-        // TO DO
+        store.setSortBy("Old Publish");
+        handleMenuClose();
     }
     function handleSortByViews() {
-        // TO DO
+        store.setSortBy("Views");
+        handleMenuClose();
     }
     function handleSortByLikes() {
-        // TO DO
+        store.setSortBy("Likes");
+        handleMenuClose();
     }
     function handleSortByDislikes() {
-        // TO DO
+        store.setSortBy("Dislikes");
+        handleMenuClose();
     }
     function filterByListView(pair) {
         if (store.currentView === "Your Lists") {
@@ -90,12 +95,30 @@ const HomeScreen = () => {
             return pair.username === store.searchQuery;
         } 
     }
+    function sortFunction(a,b) {
+        if (store.sortBy === "New Publish") {
+            return new Date(a.publishDate) < new Date(b.publishDate);
+        }
+        else if (store.sortBy === "Old Publish") {
+            return new Date(a.publishDate) > new Date(b.publishDate);
+        }
+        else if (store.sortBy === "Views") {
+            return a.views < b.views;
+        }
+        else if (store.sortBy === "Likes") {
+            return a.likeUsernames.length < b.likeUsernames.length;
+        }
+        else if (store.sortBy === "Dislikes") {
+            return a.dislikeUsernames.length < b.dislikeUsernames.length;
+        }
+    }
+    
     let listCard = "";
     if (store) {
         listCard = 
             <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
             {
-                store.idNamePairs.filter(pair => filterByListView(pair)).filter(pair => filterBySearchQuery(pair)).map((pair) => (
+                store.idNamePairs.filter(pair => filterByListView(pair)).filter(pair => filterBySearchQuery(pair)).sort((a, b) => sortFunction(a,b)).map((pair) => (
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}

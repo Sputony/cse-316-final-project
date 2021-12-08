@@ -128,6 +128,15 @@ function ListCard(props) {
         editOrPublish = 
         <Box sx={{ p: 1 }} sx={{fontSize:'24pt'}}>{"Published: " + date}</Box>
     }
+    let deleteButton = ""
+    if (store.currentView === "Your Lists") {
+        deleteButton =
+            <IconButton onClick={(event) => {
+                handleDeleteList(event, idNamePair._id)
+            }} aria-label='delete'>
+                <DeleteIcon style={{fontSize:'24pt'}} />
+            </IconButton>
+    }
 
     let cardElement =
         <ListItem
@@ -156,11 +165,7 @@ function ListCard(props) {
                     </Grid>
                     <Grid item xs={1}>
                         <Box sx={{ p: 1 }}>
-                            <IconButton onClick={(event) => {
-                                handleDeleteList(event, idNamePair._id)
-                            }} aria-label='delete'>
-                                <DeleteIcon style={{fontSize:'24pt'}} />
-                            </IconButton>
+                            {deleteButton}
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
