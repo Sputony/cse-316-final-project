@@ -94,21 +94,21 @@ const HomeScreen = () => {
     }
     function filterBySearchQuery(pair) {
         if (store.currentView === "Your Lists") {
-            return pair.name.startsWith(store.searchQuery);
+            return pair.name.toLowerCase().startsWith(store.searchQuery.toLowerCase());
         }
         else if (store.currentView === "All Lists") {
             if (store.searchQuery === "") {
                 return true;
             }
             else {
-                return pair.name === store.searchQuery;
+                return pair.name.toLowerCase().startsWith(store.searchQuery.toLowerCase());
             }
         }
         else if (store.currentView === "User Lists") {
-            return pair.username === store.searchQuery;
+            return pair.username.toLowerCase() === store.searchQuery.toLowerCase();
         }
         else if (store.currentView === "Community Lists") {
-            return pair.name.startsWith(store.searchQuery);
+            return pair.name.toLowerCase().startsWith(store.searchQuery.toLowerCase());
         }
     }
     function sortFunction(a,b) {

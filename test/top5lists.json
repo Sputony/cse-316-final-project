@@ -1,0 +1,167 @@
+[{
+  "_id": {
+    "$oid": "61b16cae4ae34723e07ae6de"
+  },
+  "items": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ],
+  "votes": [],
+  "likeUsernames": [],
+  "dislikeUsernames": [],
+  "name": "Test",
+  "ownerEmail": "tran.anthony@aol.com",
+  "username": "Kano",
+  "comments": [],
+  "views": 1,
+  "publishDate": {
+    "$date": "2021-12-09T02:40:58.880Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-09T02:40:46.111Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-09T02:49:15.132Z"
+  },
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "61b16cba4ae34723e07ae6e6"
+  },
+  "items": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "9"
+  ],
+  "votes": [
+    15,
+    8,
+    6,
+    4,
+    4
+  ],
+  "likeUsernames": [],
+  "dislikeUsernames": [],
+  "name": "Test",
+  "ownerEmail": "admin",
+  "username": "admin",
+  "comments": [
+    {
+      "_id": {
+        "$oid": "61b16def4ae34723e07ae75e"
+      },
+      "commentUsername": "Kano",
+      "commentString": "Completely agree"
+    },
+    {
+      "_id": {
+        "$oid": "61b16ddb4ae34723e07ae749"
+      },
+      "commentUsername": "Gamboiuwu",
+      "commentString": "Nice!"
+    }
+  ],
+  "views": 4,
+  "publishDate": {
+    "$date": "2021-12-09T02:45:29.897Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-09T02:40:58.916Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-09T02:46:07.018Z"
+  },
+  "__v": 5
+},{
+  "_id": {
+    "$oid": "61b16cc84ae34723e07ae6f6"
+  },
+  "items": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ],
+  "votes": [],
+  "likeUsernames": [],
+  "dislikeUsernames": [],
+  "name": "Test",
+  "ownerEmail": "typicalasian@gmail.com",
+  "username": "Digit",
+  "comments": [],
+  "views": 0,
+  "publishDate": {
+    "$date": "2021-12-09T02:44:39.327Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-09T02:41:12.776Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-09T02:44:39.336Z"
+  },
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "61b16db74ae34723e07ae730"
+  },
+  "items": [
+    "1",
+    "9",
+    "8",
+    "7",
+    "6"
+  ],
+  "votes": [],
+  "likeUsernames": [],
+  "dislikeUsernames": [],
+  "name": "Test",
+  "ownerEmail": "totallygam@gmail.com",
+  "username": "Gamboiuwu",
+  "comments": [],
+  "views": 0,
+  "publishDate": {
+    "$date": "2021-12-09T02:45:29.838Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-09T02:45:11.493Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-09T02:45:29.846Z"
+  },
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "61b16e914ae34723e07ae763"
+  },
+  "items": [
+    "?",
+    "?",
+    "?",
+    "?",
+    "?"
+  ],
+  "votes": [],
+  "likeUsernames": [],
+  "dislikeUsernames": [],
+  "name": "Untitled3",
+  "ownerEmail": "tran.anthony@aol.com",
+  "username": "Kano",
+  "comments": [],
+  "views": 0,
+  "publishDate": {
+    "$date": "1970-01-01T00:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-09T02:48:49.428Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-09T02:48:49.428Z"
+  },
+  "__v": 0
+}]

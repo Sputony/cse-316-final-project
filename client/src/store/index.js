@@ -564,13 +564,15 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.deleteList = async function (listToDelete) {
-        let communityId = this.idNamePairs.find(pair => (pair.name === listToDelete.name) && (pair.username === "admin"))._id;
+        let communityId = this.idNamePairs.find(pair => (pair.name === listToDelete.name) && (pair.username === "admin"));
         let pairsArray = this.idNamePairs;
         pairsArray.splice(this.idNamePairs.findIndex(pair => (pair.name === listToDelete.name) && (pair.username === auth.user.username), 1));
         let response = await api.deleteTop5ListById(listToDelete._id);
         if (response.data.success) {
             store.loadIdNamePairs();
-            store.updateCommunityListById(communityId, pairsArray);
+            if (communityId !== undefined) {
+                store.updateCommunityListById(communityId._id, pairsArray);
+            }
             history.push("/");
         }
     }
